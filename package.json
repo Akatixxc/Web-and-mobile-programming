@@ -1,0 +1,31 @@
+{
+    "name": "exercise3",
+    "version": "1.0.0",
+    "description": "Exercise part 3 for the web and mobile programming course",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "eject": "react-scripts eject",
+        "watch": "nodemon index.js",
+        "dev": "npm run watch && npm run start"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Akatixxc/Web-and-mobile-programming.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Akatixxc/Web-and-mobile-programming/issues"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.3"
+    },
+    "dependencies": {
+        "cors": "^2.8.5",
+        "express": "^4.16.3"
+    },
+    "homepage": "https://github.com/Akatixxc/Web-and-mobile-programming#readme"
+}
