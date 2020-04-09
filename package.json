@@ -2,10 +2,12 @@
     "name": "exercise3",
     "version": "1.0.0",
     "description": "Exercise part 3 for the web and mobile programming course",
-    "main": "index.js",
+    "main": "build/index.html",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "watch": "nodemon index.js"
+        "server": "nodemon index.js",
+        "client": "react-scripts start",
+        "start": "npm run server && npm tun client"
     },
     "repository": {
         "type": "git",
