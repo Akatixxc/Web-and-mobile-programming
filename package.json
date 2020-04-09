@@ -5,11 +5,7 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "react-scripts start",
-        "build": "react-scripts build",
-        "eject": "react-scripts eject",
-        "watch": "nodemon index.js",
-        "dev": "npm run watch && npm run start"
+        "watch": "nodemon index.js"
     },
     "repository": {
         "type": "git",
