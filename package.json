@@ -7,7 +7,7 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "server": "nodemon index.js",
         "client": "react-scripts start",
-        "start": "npm run server && npm tun client"
+        "start": "npm run server && npm run client"
     },
     "repository": {
         "type": "git",
@@ -23,7 +23,8 @@
     },
     "dependencies": {
         "cors": "^2.8.5",
-        "express": "^4.16.3"
+        "express": "^4.16.3",
+        "mongoose": "^5.9.9"
     },
     "homepage": "https://github.com/Akatixxc/Web-and-mobile-programming#readme"
 }
