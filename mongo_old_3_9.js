@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const uri = require('./dburi');
+const uri = require('./dburi'); //old directory
 
 mongoose.connect(uri.uri, { useNewUrlParser: true });
 

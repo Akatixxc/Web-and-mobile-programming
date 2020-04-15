@@ -1,53 +1,54 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const Person = require('./models/person');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 app.use(express.static('build'));
 
-let persons = [
-    {
-        name: 'Arto Hellas',
-        number: '040-123456',
-        id: 1,
-    },
-    {
-        name: 'Martti Tienari',
-        number: '040-123456',
-        id: 2,
-    },
-    {
-        name: 'Arto Järvinen',
-        number: '040-123456',
-        id: 3,
-    },
-    {
-        name: 'Lea Kutvonen',
-        number: '040-123456',
-        id: 4,
-    },
-];
+const formatPerson = (person) => {
+    const formattedPerson = {
+        name: person.name,
+        number: person.number,
+        id: person._id,
+    };
+    delete formatPerson._id;
+
+    return formattedPerson;
+};
 
 app.get('/api/persons', (req, res) => {
-    res.json(persons);
+    Person.find({}, { __v: 0 }).then((persons) => {
+        res.json(persons.map(formatPerson));
+    });
 });
 
 app.get('/api/persons/:id', (req, res) => {
-    const id = Number(req.params.id);
-    const person = persons.find((person) => person.id === id);
-    if (person) {
-        res.json(person);
-    } else {
-        res.status(404).end();
-    }
+    Person.findById(req.params.id)
+        .then((person) => {
+            if (person) {
+                res.json(formatPerson(person));
+            } else {
+                res.status(404).end();
+            }
+        })
+        .catch((err) => {
+            //console.log(err);
+            res.status(400).send({ error: 'malformatted id' });
+        });
 });
 
 app.delete('/api/persons/:id', (req, res) => {
-    const id = Number(req.params.id);
-    persons = persons.filter((person) => person.id !== id);
-    res.status(204).end();
+    Person.findByIdAndRemove(req.params.id)
+        .then((result) => {
+            res.status(204).end();
+        })
+        .catch((err) => {
+            //console.log(err);
+            res.status(400).send({ error: 'malformatted id' });
+        });
 });
 
 app.post('/api/persons', (req, res) => {
@@ -56,32 +57,18 @@ app.post('/api/persons', (req, res) => {
     if (body.name === undefined || body.number === undefined) {
         return res.status(400).json({ error: 'name or number missing' });
     }
-    if (!persons.every((person) => person.name !== body.name)) {
-        return res.status(400).json({ error: 'name must be unique' });
-    }
 
-    const generateId = () => {
-        const maxId =
-            persons.length > 0
-                ? persons
-                      .map((p) => p.id)
-                      .sort((a, b) => a - b)
-                      .reverse()[0]
-                : 1;
-        return maxId + 1;
-    };
-
-    const person = {
+    const person = new Person({
         name: body.name,
         number: body.number,
-        id: generateId(),
-    };
-    /*  id:n tilalle kuului laittaa random luku mutta tämä ratkaisu on parmepi.
-        Satunnaisen id:n voi luoda seuraavasti (1 - 1000000):
-        Math.floor(Math.random() * 1000000) + 1;
-    */
-    persons = persons.concat(person);
-    res.json(persons);
+    });
+
+    person.save().then((savedPerson) => {
+        console.log(`adding person ${body.name} number ${body.number} to the directory`);
+        Person.find({}, { __v: 0 }).then((persons) => {
+            res.json(persons.map(formatPerson));
+        });
+    });
 });
 
 const PORT = process.env.PORT || 3001;
